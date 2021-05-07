@@ -10,9 +10,20 @@
 
 int main(void)
 {
-    /* Replace with your application code */
+	//Inicializar periféricos
+	
+	//keypadinit
+	//lcdinit
+	
+	//Inicializar MEF
+	
+	//mefinit
+	
+	
+	
     while (1) 
     {
+		
     }
 }
 
