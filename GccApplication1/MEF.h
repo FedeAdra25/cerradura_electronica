@@ -23,6 +23,8 @@ void ChangeCLAVE_INC(void);
 void ChangeIDLE(void);
 void ChangeM_CLAVE(void);
 void ChangeM_CLAVE_N (void);
+void ChangeM_CLAVE_F(void);
+void ChangeM_CLAVE_E(void);
 
 //Funciones de salida de la MEF
 void Out_IngClave (void);

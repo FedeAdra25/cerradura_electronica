@@ -16,14 +16,9 @@ static MEF_state system_state;
 static uint8_t claveAct[4] = {'0','8','5','2'};
 static uint8_t key;
 static uint8_t *claveIng;
-static uint8_t firstTimeIdle= 1;
-static uint8_t firstTimeClaveInc= 1;
-static uint8_t firstTimeAbierto= 1;
-static uint8_t firstTimeMClave= 1;
 static uint8_t posClaveIng= 0;
 static uint32_t ticksPerSecond; //Se inicializa en el init
 static uint8_t terminoIng=0;
-static uint8_t firstTimeMClaveN=1;
 static uint8_t lengthClaveIng;
 
 //Prototipos de funciones privadas 
@@ -61,10 +56,8 @@ void MEF_update (void)
 				state_time=0;
 			}
 			else {
-					if (firstTimeIdle)
-					{
+				
 						OutIdle();
-					}
 					//if actualizo hora imprimir HH:MM:SS
 				 }
 		break;
@@ -80,9 +73,8 @@ void MEF_update (void)
 			 }		
 		break;
 		case CLAVE_INC :
-			if(firstTimeClaveInc)
+			if(state_time == 0)
 			{
-				firstTimeClaveInc=0;
 				OutClaveInc();
 			}
 			else if (Clave_IncTime())
@@ -91,9 +83,8 @@ void MEF_update (void)
 				}
 		break;
 		case ABIERTO:
-			if(firstTimeAbierto)
+			if(state_time == 0)
 			{
-				firstTimeAbierto=0;
 				OutAbierto();
 			}
 			else if (AbiertoTime())
@@ -102,7 +93,7 @@ void MEF_update (void)
 			}
 		break;
 		case M_CLAVE :
-			if (firstTimeMClave || KEYPAD_Scan(&key))
+			if (state_time==0 || KEYPAD_Scan(&key))
 			{
 				terminoIng= OutMClave();
 			}
@@ -113,7 +104,7 @@ void MEF_update (void)
 			}
 		break;
 		case M_CLAVE_N:
-			if(firstTimeMClaveN || KEYPAD_Scan(&key))
+			if(state_time == 0 || KEYPAD_Scan(&key))
 			{
 				terminoIng= OutMClaveN();
 			}
@@ -129,13 +120,19 @@ void MEF_update (void)
 						{
 							claveAct[i]= claveIng[i];
 						}
+						ChangeM_CLAVE_F();
 					}
 				}
+				ChangeM_CLAVE_E();
+			}
+		break;
+		case M_CLAVE_F :
+			if (state_time==0)
+			{
+				OutMClaveF();
 			}
 		break;
 		case M_CLAVE_E :
-		break;
-		case M_CLAVE_F :
 		break;
 		case M_HORA :
 		break;
@@ -148,12 +145,11 @@ void MEF_update (void)
 	***************************************************************/
 	void OutIdle(void)
 	{
-		if(firstTimeIdle)
+		if(state_time==0)
 		{
 			LCDclr();
 			LCDGotoXY(4,1);
 			LCDstring("CERRADO", 7);
-			firstTimeIdle=0;
 		}
 		//LCDGotoXY(,0);
 		//Imprimo hora
@@ -218,7 +214,6 @@ void MEF_update (void)
 	void ChangeCLAVE_INC(void)
 	{
 		state_time=0;
-		firstTimeClaveInc=1;
 		system_state= CLAVE_INC;
 	}
 	
@@ -252,7 +247,6 @@ void MEF_update (void)
 	{
 		state_time=0;
 		posClaveIng=0;
-		firstTimeIdle= 1;
 		system_state= IDLE;
 	}
 	
@@ -296,25 +290,21 @@ void MEF_update (void)
 	***************************************************************/
 	uint8_t OutMClave(void)
 	{
-		if(firstTimeMClave)
+		if(state_time == 0)
 		{
 			LCDclr();
 			LCDstring("Clave Actual:", 13);
 			LCDGotoXY(4,1);
-			firstTimeMClave=0;
 			return 0;
 		}
-		else
-			{
-				if (key != 'D')
-				{
-					claveIng[posClaveIng]= key;
-					posClaveIng++;
-					LCDsendChar('*');
-					return 0;
-				}
-				return 1;
-			}
+		if (key != 'D')
+		{
+			claveIng[posClaveIng]= key;
+			posClaveIng++;
+			LCDsendChar('*');
+			return 0;
+		}
+		return 1;
 	}
 	
 	void ChangeM_CLAVE_N(void)
@@ -332,12 +322,11 @@ void MEF_update (void)
 	***************************************************************/
 	uint8_t OutMClaveN(void)
 	{
-		if(firstTimeMClaveN)
+		if(state_time==0)
 		{
 			LCDclr();
 			LCDstring("Clave nueva:", 12);
 			LCDGotoXY(4,1);
-			firstTimeMClaveN=0;
 			return 0;
 		}
 		else
@@ -351,4 +340,26 @@ void MEF_update (void)
 				}
 				return 1;
 			}
+	}
+	
+	void ChangeM_CLAVE_F(void)
+	{
+		state_time=0;
+		system_state= M_CLAVE_F;
+	}
+	
+	void ChangeM_CLAVE_E(void)
+	{
+		
+	}
+	
+	
+	/***************************************************************
+		Funcion que sirve mostrar la salida del estado M_CLAVE_F, en este
+		caso se muestra el mensaje "clave nueva:", y a medida que se
+		presionan las teclas *
+	***************************************************************/
+	void OutMClaveF(void)
+	{
+		
 	}
