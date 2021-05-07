@@ -6,4 +6,6 @@
 *.exe
 *.o
 *.so
-GccApplication/Debug/
+*.hex
+*.lss
+GccApplication1/Debug/**
