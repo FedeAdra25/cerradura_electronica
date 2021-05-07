@@ -16,26 +16,9 @@ static MEF_state system_state;
 static uint8_t claveAct[4] = {'0','8','5','2'};
 static uint8_t key;
 static uint8_t *claveIng;
-<<<<<<< HEAD
-<<<<<<< HEAD
-static uint8_t firstTimeIdle= 1;
-static uint8_t firstTimeClaveInc= 1;
-static uint8_t firstTimeAbierto= 1;
-static uint8_t firstTimeMClave= 1;
 static uint8_t posClaveIng= 0;
 static uint32_t ticksPerSecond; //Se inicializa en el init
 static uint8_t terminoIng=0;
-static uint8_t firstTimeMClaveN=1;
-=======
-static uint8_t posClaveIng= 0;
-static uint32_t ticksPerSecond; //Se inicializa en el init
-static uint8_t terminoIng=0;
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
-=======
-static uint8_t posClaveIng= 0;
-static uint32_t ticksPerSecond; //Se inicializa en el init
-static uint8_t terminoIng=0;
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
 static uint8_t lengthClaveIng;
 
 //Prototipos de funciones privadas 
@@ -73,20 +56,8 @@ void MEF_update (void)
 				state_time=0;
 			}
 			else {
-<<<<<<< HEAD
-<<<<<<< HEAD
-					if (firstTimeIdle)
-					{
-						OutIdle();
-					}
-=======
 				
 						OutIdle();
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
-=======
-				
-						OutIdle();
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
 					//if actualizo hora imprimir HH:MM:SS
 				 }
 		break;
@@ -102,19 +73,8 @@ void MEF_update (void)
 			 }		
 		break;
 		case CLAVE_INC :
-<<<<<<< HEAD
-<<<<<<< HEAD
-			if(firstTimeClaveInc)
-			{
-				firstTimeClaveInc=0;
-=======
 			if(state_time == 0)
 			{
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
-=======
-			if(state_time == 0)
-			{
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
 				OutClaveInc();
 			}
 			else if (Clave_IncTime())
@@ -123,19 +83,8 @@ void MEF_update (void)
 				}
 		break;
 		case ABIERTO:
-<<<<<<< HEAD
-<<<<<<< HEAD
-			if(firstTimeAbierto)
-			{
-				firstTimeAbierto=0;
-=======
 			if(state_time == 0)
 			{
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
-=======
-			if(state_time == 0)
-			{
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
 				OutAbierto();
 			}
 			else if (AbiertoTime())
@@ -144,15 +93,7 @@ void MEF_update (void)
 			}
 		break;
 		case M_CLAVE :
-<<<<<<< HEAD
-<<<<<<< HEAD
-			if (firstTimeMClave || KEYPAD_Scan(&key))
-=======
 			if (state_time==0 || KEYPAD_Scan(&key))
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
-=======
-			if (state_time==0 || KEYPAD_Scan(&key))
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
 			{
 				terminoIng= OutMClave();
 			}
@@ -161,37 +102,8 @@ void MEF_update (void)
 				if(ClaveCorrecta()) ChangeM_CLAVE_N();
 				else ChangeCLAVE_INC();
 			}
-<<<<<<< HEAD
-<<<<<<< HEAD
 		break;
 		case M_CLAVE_N:
-			if(firstTimeMClaveN || KEYPAD_Scan(&key))
-			{
-				terminoIng= OutMClaveN();
-			}
-			if (terminoIng)
-			{
-				if(key == 'D')
-				{
-					lengthClaveIng= sizeof (claveIng)/sizeof(uint8_t);
-					if (lengthClaveIng == lengthClaveAct)
-					{
-						uint8_t i;
-						for (i=0; i<4;i++)
-						{
-							claveAct[i]= claveIng[i];
-						}
-					}
-				}
-			}
-=======
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
-		break;
-		case M_CLAVE_N:
-=======
-		break;
-		case M_CLAVE_N:
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
 			if(state_time == 0 || KEYPAD_Scan(&key))
 			{
 				terminoIng= OutMClaveN();
@@ -220,14 +132,8 @@ void MEF_update (void)
 				OutMClaveF();
 			}
 		break;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
 		case M_CLAVE_E :
 		break;
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
 		case M_HORA :
 		break;
 	}
@@ -239,26 +145,11 @@ void MEF_update (void)
 	***************************************************************/
 	void OutIdle(void)
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
-		if(firstTimeIdle)
-=======
 		if(state_time==0)
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
-=======
-		if(state_time==0)
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
 		{
 			LCDclr();
 			LCDGotoXY(4,1);
 			LCDstring("CERRADO", 7);
-<<<<<<< HEAD
-<<<<<<< HEAD
-			firstTimeIdle=0;
-=======
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
-=======
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
 		}
 		//LCDGotoXY(,0);
 		//Imprimo hora
@@ -323,7 +214,6 @@ void MEF_update (void)
 	void ChangeCLAVE_INC(void)
 	{
 		state_time=0;
-		firstTimeClaveInc=1;
 		system_state= CLAVE_INC;
 	}
 	
@@ -357,13 +247,6 @@ void MEF_update (void)
 	{
 		state_time=0;
 		posClaveIng=0;
-<<<<<<< HEAD
-<<<<<<< HEAD
-		firstTimeIdle= 1;
-=======
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
-=======
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
 		system_state= IDLE;
 	}
 	
@@ -407,52 +290,25 @@ void MEF_update (void)
 	***************************************************************/
 	uint8_t OutMClave(void)
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
-		if(firstTimeMClave)
-=======
 		if(state_time == 0)
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
-=======
-		if(state_time == 0)
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
 		{
 			LCDclr();
 			LCDstring("Clave Actual:", 13);
 			LCDGotoXY(4,1);
-<<<<<<< HEAD
-<<<<<<< HEAD
-			firstTimeMClave=0;
 			return 0;
 		}
-		else
-			{
-				if (key != 'D')
-				{
-					claveIng[posClaveIng]= key;
-					posClaveIng++;
-					LCDsendChar('*');
-					return 0;
-				}
-				return 1;
-			}
-=======
-=======
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
-			return 0;
-		}
-		if (key != 'D')
+		else 
 		{
-			claveIng[posClaveIng]= key;
-			posClaveIng++;
-			LCDsendChar('*');
-			return 0;
+			if (key != 'D')
+			{
+				claveIng[posClaveIng]= key;
+				posClaveIng++;
+				LCDsendChar('*');
+				return 0;
+			}
+			return 1;
 		}
-		return 1;
-<<<<<<< HEAD
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
-=======
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
+		
 	}
 	
 	void ChangeM_CLAVE_N(void)
@@ -470,26 +326,11 @@ void MEF_update (void)
 	***************************************************************/
 	uint8_t OutMClaveN(void)
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
-		if(firstTimeMClaveN)
-=======
 		if(state_time==0)
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
-=======
-		if(state_time==0)
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
 		{
 			LCDclr();
 			LCDstring("Clave nueva:", 12);
 			LCDGotoXY(4,1);
-<<<<<<< HEAD
-<<<<<<< HEAD
-			firstTimeMClaveN=0;
-=======
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
-=======
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
 			return 0;
 		}
 		else
@@ -503,11 +344,6 @@ void MEF_update (void)
 				}
 				return 1;
 			}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
 	}
 	
 	void ChangeM_CLAVE_F(void)
@@ -530,8 +366,4 @@ void MEF_update (void)
 	void OutMClaveF(void)
 	{
 		
-<<<<<<< HEAD
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
-=======
->>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
 	}
