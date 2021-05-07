@@ -9,13 +9,27 @@
 #ifndef INCFILE1_H_
 #define INCFILE1_H_
 
+#include <avr/io.h>
+
 typedef enum {IDLE, ING_CLAVE, ABIERTO, CLAVE_INC, M_HORA, M_CLAVE, M_CLAVE_F, M_CLAVE_E, M_CLAVE_N} MEF_state;
 
+//Funciones generales de la MEF
 void MEF_update (void);
+
+//Funciones de cambios de estados
 void changeING_CLAVE (void);
-void Out_IngClave (void);
 void ChangeABIERTO(void);
 void ChangeCLAVE_INC(void);
+void ChangeIDLE(void);
+void ChangeM_CLAVE(void);
+void ChangeM_CLAVE_N (void);
 
+//Funciones de salida de la MEF
+void Out_IngClave (void);
+void OutClaveInc(void);
+void OutAbierto(void);
+void OutIdle(void);
+uint8_t OutMClave(void);
+uint8_t OutMClaveN(void);
 
 #endif /* INCFILE1_H_ */
