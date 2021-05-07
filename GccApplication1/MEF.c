@@ -312,6 +312,23 @@ void MEF_Update (void)
 			LCDclr();
 			LCDstring("Clave Actual:", 13);
 			LCDGotoXY(4,1);
+<<<<<<< HEAD
+=======
+			return 0;
+		}
+		else 
+		{
+			if (key != 'D')
+			{
+				claveIng[posClaveIng]= key;
+				posClaveIng++;
+				LCDsendChar('*');
+				return 0;
+			}
+			return 1;
+		}
+		
+>>>>>>> e0d77d2280998fb54ee9a122bc1d172211aacc6b
 	}
 	
 	void ChangeM_CLAVE_N(void)
