@@ -24,6 +24,11 @@ void ChangeIDLE(void);
 void ChangeM_CLAVE(void);
 void ChangeM_CLAVE_N (void);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+void ChangeM_CLAVE_F(void);
+void ChangeM_CLAVE_E(void);
+>>>>>>> e7f9d02e8f0433894f6bfa4162f90af7dd04cb37
 =======
 void ChangeM_CLAVE_F(void);
 void ChangeM_CLAVE_E(void);
