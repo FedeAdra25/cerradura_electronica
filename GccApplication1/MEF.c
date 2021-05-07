@@ -20,6 +20,7 @@ static uint32_t ticksPerSecond; //Se inicializa en el init
 
 //Prototipos de funciones privadas 
 static uint8_t ClaveCorrecta(void);
+static uint8_t Clave_IncTime(void);
 
 
 
@@ -74,7 +75,15 @@ void MEF_update (void)
 				 }		
 		break;
 		case CLAVE_INC :
-			
+			if(firstTimeClaveInc)
+			{
+				firstTimeClaveInc=0;
+				OutClaveInc();
+			}
+			else if (Clave_IncTime())
+				{
+					ChangeIDLE();
+				}
 		break;
 		case ABIERTO:
 		break;
@@ -141,5 +150,38 @@ void MEF_update (void)
 	void ChangeCLAVE_INC(void)
 	{
 		state_time=0;
+		firstTimeClaveInc=1;
 		system_state= CLAVE_INC;
-}
+	}
+	
+	/***************************************************************
+	Funcion que sirve para mostrar la salida de la MEF al estado
+	CLAVE_INC, el mismo consiste en mostrar en el segundo renglon del
+	LCD "DENEGADO" por 2 segundos
+	***************************************************************/
+	void OutClaveInc(void)
+	{
+		LCDclr();
+		LCDGotoXY(4,1);
+		LCDstring("DENEGADO", 8);
+	}
+	
+	/***************************************************************
+	Funcion que determina si se cumplio el tiempo en el estado 
+	CLAVE_INC, en este caso chequea si el tiempo en dicho estado (en
+	ticks), es igual al tiempo tambien en ticks (por eso se multiplica
+	 el valor 2 correspondiente a los seg que se debe esta en dicho 
+	 estado por la cantidad de ticks por segundo) que se debe estar 
+	 en dicho estado
+	***************************************************************/
+	static uint8_t Clave_IncTime(void)
+	{
+		if(state_time < 2*ticksPerSecond) return 0;
+		else return 1;
+	}
+	
+	void ChangeIDLE(void)
+	{
+		firstTimeIdle= 1;
+		system_state= IDLE;
+	}

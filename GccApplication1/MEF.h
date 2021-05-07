@@ -16,6 +16,7 @@ void changeING_CLAVE (void);
 void Out_IngClave (void);
 void ChangeABIERTO(void);
 void ChangeCLAVE_INC(void);
-
+void OutClaveInc(void);
+void ChangeIDLE(void);
 
 #endif /* INCFILE1_H_ */
