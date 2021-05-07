@@ -120,6 +120,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="MEF.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MEF.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="KeypadScanLib.c">
       <SubType>compile</SubType>
     </Compile>
