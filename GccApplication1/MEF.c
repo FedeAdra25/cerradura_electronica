@@ -6,12 +6,16 @@
  */ 
 #include "MEF.h"
 #include "KeypadScanLib.h"
+
+// Constantes
+const uint8_t lengthClaveAct=4;
+
 //Variables globales privadas
 static  uint8_t state_time = 0;
 static MEF_state system_state;
 static uint8_t claveAct[4] = {'0','8','5','2'};
 static uint8_t key;
-static uint8_t claveIng[4];
+static uint8_t *claveIng;
 static uint8_t firstTimeIdle= 1;
 static uint8_t firstTimeClaveInc= 1;
 static uint8_t firstTimeAbierto= 1;
@@ -20,6 +24,7 @@ static uint8_t posClaveIng= 0;
 static uint32_t ticksPerSecond; //Se inicializa en el init
 static uint8_t terminoIng=0;
 static uint8_t firstTimeMClaveN=1;
+static uint8_t lengthClaveIng;
 
 //Prototipos de funciones privadas 
 static uint8_t ClaveCorrecta(void);
@@ -35,7 +40,7 @@ void MEF_update (void)
 	switch (system_state)
 	{
 		case IDLE :
-			if (KEYPAD_Update(&key))
+			if (KEYPAD_Scan(&key))
 			{
 				switch (key)
 				{
@@ -64,15 +69,15 @@ void MEF_update (void)
 				 }
 		break;
 		case ING_CLAVE :
-			if (KEYPAD_Update(&key) && (posClaveIng < 4))
+			if (KEYPAD_Scan(&key) && (posClaveIng < 4))
 			{
 				Out_IngClave();
 			}
-			else if (posClaveIng >= 4)
-				 {
-					if(ClaveCorrecta()) ChangeABIERTO();
-					else ChangeCLAVE_INC();
-				 }		
+			if (posClaveIng >= 4)
+			 {
+				if(ClaveCorrecta()) ChangeABIERTO();
+				else ChangeCLAVE_INC();
+			 }		
 		break;
 		case CLAVE_INC :
 			if(firstTimeClaveInc)
@@ -116,7 +121,15 @@ void MEF_update (void)
 			{
 				if(key == 'D')
 				{
-					
+					lengthClaveIng= sizeof (claveIng)/sizeof(uint8_t);
+					if (lengthClaveIng == lengthClaveAct)
+					{
+						uint8_t i;
+						for (i=0; i<4;i++)
+						{
+							claveAct[i]= claveIng[i];
+						}
+					}
 				}
 			}
 		break;
@@ -181,8 +194,7 @@ void MEF_update (void)
 	
 	static uint8_t ClaveCorrecta(void)
 	{
-		uint8_t lengthClaveIng= sizeof (claveIng) / sizeof(uint8_t);
-		uint8_t lengthClaveAct= sizeof (claveAct) / sizeof(uint8_t);
+		lengthClaveIng= sizeof (claveIng) / sizeof(uint8_t);
 		if(lengthClaveAct == lengthClaveIng)
 		{
 			uint8_t  i=0;

@@ -30,6 +30,6 @@ void OutClaveInc(void);
 void OutAbierto(void);
 void OutIdle(void);
 uint8_t OutMClave(void);
-
+uint8_t OutMClaveN(void);
 
 #endif /* INCFILE1_H_ */
