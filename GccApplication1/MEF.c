@@ -6,6 +6,7 @@
  */ 
 #include "MEF.h"
 #include "KeypadScanLib.h"
+#include "lcd.h"
 
 // Constantes
 const uint8_t lengthClaveAct=4;
@@ -19,10 +20,34 @@ static uint8_t claveIng[4];
 static uint8_t posClaveIng= 0;
 static uint32_t ticksPerSecond; //Se inicializa en el init
 
+
+
 //Prototipos de funciones privadas 
 static uint8_t ClaveCorrecta(void);
 static uint8_t Clave_IncTime(void);
 static uint8_t AbiertoTime(void);
+
+//Funciones para modelar transiciones de estados
+static void changeING_CLAVE (void);
+static void ChangeABIERTO(void);
+static void ChangeCLAVE_INC(void);
+static void ChangeIDLE(void);
+static void ChangeM_CLAVE(void);
+static void ChangeM_CLAVE_N (void);
+static void ChangeM_CLAVE_F(void);
+static void ChangeM_CLAVE_E(void);
+
+
+//Funciones para modelar cambios de salida de la MEF
+static void Out_IngClave (void);
+static void OutClaveInc(void);
+static void OutAbierto(void);
+static void OutIdle(void);
+static void OutMClave(void);
+static void OutMClaveN(void);
+static void OutMClaveE(void);
+static void OutMClaveF(void);
+
 
 
 void MEF_Init(uint32_t tps){
@@ -33,8 +58,9 @@ void MEF_Init(uint32_t tps){
 
 void MEF_Update (void)
 {
-	state_time++;
 	//Cuento el numero de interrupciones, para calcular el tiempo en cada estado
+	state_time++;
+	
 	switch (system_state)
 	{
 		case IDLE:
@@ -103,7 +129,7 @@ void MEF_Update (void)
 			}
 			if(KEYPAD_Scan(&key))
 			{
-				if (key!='A' && key!='B' && key!='C' && key!='*' && posClaveIng < 4)
+				if (key!='A' && key!='B' && key!='C' && key!='*' && key!='D' && key!='#' && posClaveIng < 4)
 				{
 					Out_IngClave();
 				}
@@ -182,7 +208,7 @@ void MEF_Update (void)
 		{
 			LCDclr();
 			LCDGotoXY(4,1);
-			LCDstring("CERRADO", 7);
+			LCDstring((uint8_t*)"CERRADO",(uint8_t) 7);
 		}
 		//LCDGotoXY(,0);
 		//Imprimo hora
@@ -252,7 +278,7 @@ void MEF_Update (void)
 	{
 		LCDclr();
 		LCDGotoXY(4,1);
-		LCDstring("DENEGADO", 8);
+		LCDstring((uint8_t*)"DENEGADO", 8);
 	}
 	
 	/***************************************************************
@@ -285,7 +311,7 @@ void MEF_Update (void)
 	{
 		LCDclr();
 		LCDGotoXY(4,1);
-		LCDstring("ABIERTO", 7);
+		LCDstring((uint8_t*)"ABIERTO",(uint8_t) 7);
 	}
 	
 	/***************************************************************
@@ -317,7 +343,7 @@ void MEF_Update (void)
 	void OutMClave(void)
 	{
 			LCDclr();
-			LCDstring(" Clave Actual:", 13);
+			LCDstring((uint8_t*)" Clave Actual:", 13);
 			LCDGotoXY(6,1);
 	}
 	
@@ -336,7 +362,7 @@ void MEF_Update (void)
 	void OutMClaveN(void)
 	{
 			LCDclr();
-			LCDstring(" Clave nueva:", 13);
+			LCDstring((uint8_t*)" Clave nueva:", 13);
 			LCDGotoXY(6,1);
 	}
 	
@@ -361,9 +387,9 @@ void MEF_Update (void)
 	{
 		LCDclr();
 		LCDGotoXY(2,0);
-		LCDstring(" Fin inicio",11);
+		LCDstring((uint8_t*)" Fin inicio",11);
 		LCDGotoXY(2,1);
-		LCDstring(" Nueva clave", 12);
+		LCDstring((uint8_t*)" Nueva clave", 12);
 	}
 	
 	
@@ -376,7 +402,7 @@ void MEF_Update (void)
 	{
 		LCDclr();
 		LCDGotoXY(4,0);
-		LCDstring("ERROR",5);
+		LCDstring((uint8_t*)"ERROR",5);
 		LCDGotoXY(1,1);
-		LCDstring("Clave Invalida", 14);
+		LCDstring((uint8_t*)"Clave Invalida", 14);
 	}

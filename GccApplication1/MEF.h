@@ -17,22 +17,5 @@ typedef enum {IDLE, ING_CLAVE, ABIERTO, CLAVE_INC, M_HORA, M_CLAVE, M_CLAVE_F, M
 void MEF_Init(uint32_t);
 void MEF_Update (void);
 
-//Funciones de cambios de estados
-void changeING_CLAVE (void);
-void ChangeABIERTO(void);
-void ChangeCLAVE_INC(void);
-void ChangeIDLE(void);
-void ChangeM_CLAVE(void);
-void ChangeM_CLAVE_N (void);
-void ChangeM_CLAVE_F(void);
-void ChangeM_CLAVE_E(void);
-
-//Funciones de salida de la MEF
-void Out_IngClave (void);
-void OutClaveInc(void);
-void OutAbierto(void);
-void OutIdle(void);
-void OutMClave(void);
-void OutMClaveN(void);
 
 #endif /* INCFILE1_H_ */
