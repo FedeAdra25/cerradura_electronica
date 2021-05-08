@@ -9,7 +9,8 @@
 #include "lcd.h"
 #include "KeypadScanLib.h"
 #include "MEF.h"
-#inclued "seos.h"
+#include "seos.h"
+#include "timer.h"
 
 int main(void)
 {
@@ -24,10 +25,13 @@ int main(void)
 	
 	MEF_Init(10);
 	
+	//Inicializar Timer (para el reloj)
+	TIMER_Init();
+	
 	
 	//Configurar Arq time-triggered
-	//Recibe ms para el timer
-	SEOS_Init(100);
+	//La libreria interrumpe cada 20ms
+	SEOS_Init();
 	
 	//Habilitar interrupciones
 	sei();
@@ -42,9 +46,8 @@ int main(void)
 			LCDsendChar(a);
 		}
 		*/
+		SEOS_Dispatch_Tasks();
 		
-		MEF_Update();
-		_delay_ms(100);
 		//realizar  tareas
     }
 }

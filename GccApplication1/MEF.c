@@ -19,6 +19,7 @@ static uint8_t key;
 static uint8_t claveIng[4];
 static uint8_t posClaveIng= 0;
 static uint32_t ticksPerSecond; //Se inicializa en el init
+static uint32_t tick_time;
 
 
 
@@ -60,7 +61,7 @@ void MEF_Update (void)
 {
 	//Cuento el numero de interrupciones, para calcular el tiempo en cada estado
 	state_time++;
-	
+
 	switch (system_state)
 	{
 		case IDLE:
