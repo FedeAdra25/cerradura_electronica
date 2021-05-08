@@ -9,3 +9,4 @@
 *.hex
 *.lss
 GccApplication1/Debug/**
+.vs/**

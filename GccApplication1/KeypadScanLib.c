@@ -40,12 +40,11 @@ DEVUELVE:
 0 -> NO HAY NUEVA TECLA PRESIONADA
 1 -> HAY NUEVA TECLA PRESIONADA Y ES *pkey
 ********************************************************/
-
 uint8_t KEYPAD_Scan (uint8_t *pkey)
 {
 	static uint8_t Old_key;
 	static uint8_t Key, Last_valid_key=0xFF; // no hay tecla presionada
-	if(!getKeyPressed(&Key)) {
+	if(!getKeyPressed(&Key)) { //getKeyPressed hace barrido del teclado
 		Old_key=0xFF; // no hay tecla presionada
 		Last_valid_key=0xFF;
 		return 0;
