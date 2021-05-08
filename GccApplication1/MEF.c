@@ -212,43 +212,70 @@ void MEF_Update (void)
 			{
 				case 'H':
 					OutMHoraH();
-					if (KEYPAD_Scan(&key) && ingresoDig==0)
+					if (KEYPAD_Scan(&key) && key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#')
 					{
-						ingresoDig=1;
-						horaIng= (uint8_t)key *10;
-					}
-					else if(ingresoDig== 1)
+						if (ingresoDig== 0)
 						{
-							horaIng+= (uint8_t) key;
+							ingresoDig=1;
+							horaIng= (uint8_t)key *10;
+						} 
+						else horaIng+= (uint8_t) key;
+						
+					}
+					else if( key == 'A')
+						{
 							TIMER_ModificarHora(horaIng);
 							ChangeIDLE();
+							
 						}
+						else if(key == '#')
+							{
+								ChangeIDLE();
+							}
 				break;
 				case 'M':
 					OutMHoraM();
-					if (KEYPAD_Scan(&key) && ingresoDig==0)
+					if (KEYPAD_Scan(&key) && key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#')
 					{
-						ingresoDig=1;
-						horaIng= (uint8_t)key *10;
+						if (ingresoDig== 0)
+						{
+							ingresoDig=1;
+							horaIng= (uint8_t)key *10;
+						}
+						else horaIng+= (uint8_t) key;
+						
 					}
-					else if(ingresoDig== 1)
-					{
-						horaIng+= (uint8_t) key;
-						TIMER_ModificarMinutos(horaIng);
-						ChangeIDLE();
-					}
+					else if( key == 'B')
+						{
+							TIMER_ModificarHora(horaIng);
+							ChangeIDLE();
+						
+						}
+						else if(key == '#')
+							{
+								ChangeIDLE();
+							}
 				break;
 				case 'S': 
 					OutMHoraS();
-					if (KEYPAD_Scan(&key) && ingresoDig==0)
+					if (KEYPAD_Scan(&key) && key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#')
 					{
-						ingresoDig=1;
-						horaIng= (uint8_t)key *10;
+						if (ingresoDig== 0)
+						{
+							ingresoDig=1;
+							horaIng= (uint8_t)key *10;
+						}
+						else horaIng+= (uint8_t) key;
+						
 					}
-					else if(ingresoDig== 1)
+					else if( key == 'C')
 					{
-						horaIng+= (uint8_t) key;
-						TIMER_ModificarSegundos(horaIng);
+						TIMER_ModificarHora(horaIng);
+						ChangeIDLE();
+						
+					}
+					else if(key == '#')
+					{
 						ChangeIDLE();
 					}
 				break;
