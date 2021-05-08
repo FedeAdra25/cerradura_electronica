@@ -7,6 +7,7 @@
 #include "MEF.h"
 #include "KeypadScanLib.h"
 #include "lcd.h"
+#include "timer.h"
 
 // Constantes
 const uint8_t lengthClaveAct=4;
@@ -19,13 +20,8 @@ static uint8_t key;
 static uint8_t claveIng[4];
 static uint8_t posClaveIng= 0;
 static uint32_t ticksPerSecond; //Se inicializa en el init
-<<<<<<< HEAD
-static uint32_t tick_time;
-
-=======
-static uint8_t actHora =0; 
-static char hora[8];
->>>>>>> 0ffffedcd1c61a5c77babd09ee8751112c98c3da
+static uint8_t actHora = 0; 
+static unsigned char* hora;
 
 
 //Prototipos de funciones privadas 
@@ -66,11 +62,7 @@ void MEF_Update (void)
 {
 	//Cuento el numero de interrupciones, para calcular el tiempo en cada estado
 	state_time++;
-<<<<<<< HEAD
-
-=======
 	actHora++;
->>>>>>> 0ffffedcd1c61a5c77babd09ee8751112c98c3da
 	switch (system_state)
 	{
 		case IDLE:
@@ -219,16 +211,17 @@ void MEF_Update (void)
 		{
 			LCDclr();
 			LCDGotoXY(4,0);
-			hora= TIMER_GetHora();
-			LCDstring(&hora, 8);
+			hora = TIMER_GetHora();
+			LCDstring(hora, 8);
 			LCDGotoXY(4,1);
 			LCDstring((uint8_t*)"CERRADO",(uint8_t) 7);
 		}
 		if (actHora == 10)
 		{
-			hora= TIMER_GetHora();
+			hora = TIMER_GetHora();
 			LCDGotoXY(4,0);
-			LCDstring(&hora, 8);
+			LCDstring(hora, 8);
+			actHora=0;
 		}
 		
 	}
