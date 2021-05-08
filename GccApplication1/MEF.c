@@ -22,6 +22,10 @@ static uint8_t posClaveIng= 0;
 static uint32_t ticksPerSecond; //Se inicializa en el init
 static uint8_t actHora = 0; 
 static unsigned char* hora;
+//Se usa para saber si estoy modificando la hora, los minutos, o los segundos
+static uint8_t modHora;
+static uint8_t ingresoDig;
+static uint8_t horaIng;
 
 
 //Prototipos de funciones privadas 
@@ -38,6 +42,9 @@ static void ChangeM_CLAVE(void);
 static void ChangeM_CLAVE_N (void);
 static void ChangeM_CLAVE_F(void);
 static void ChangeM_CLAVE_E(void);
+static void changeM_HORA_H(void);
+static void changeM_HORA_M(void);
+static void changeM_HORA_S(void);
 
 
 //Funciones para modelar cambios de salida de la MEF
@@ -49,6 +56,9 @@ static void OutMClave(void);
 static void OutMClaveN(void);
 static void OutMClaveE(void);
 static void OutMClaveF(void);
+static void OutMHoraH(void);
+static void OutMHoraM(void);
+static void OutMHoraS(void);
 
 
 
@@ -71,10 +81,13 @@ void MEF_Update (void)
 				switch (key)
 				{
 					case 'A':
+						changeM_HORA_H();
 					break;
 					case 'B':
+						changeM_HORA_M();
 					break;
 					case 'C':
+						changeM_HORA_S();
 					break;
 					case 'D':
 						ChangeM_CLAVE();
@@ -195,6 +208,51 @@ void MEF_Update (void)
 			}
 		break;
 		case M_HORA:
+			switch(modHora)
+			{
+				case 'H':
+					OutMHoraH();
+					if (KEYPAD_Scan(&key) && ingresoDig==0)
+					{
+						ingresoDig=1;
+						horaIng= (uint8_t)key *10;
+					}
+					else if(ingresoDig== 1)
+						{
+							horaIng+= (uint8_t) key;
+							TIMER_ModificarHora(horaIng);
+							ChangeIDLE();
+						}
+				break;
+				case 'M':
+					OutMHoraM();
+					if (KEYPAD_Scan(&key) && ingresoDig==0)
+					{
+						ingresoDig=1;
+						horaIng= (uint8_t)key *10;
+					}
+					else if(ingresoDig== 1)
+					{
+						horaIng+= (uint8_t) key;
+						TIMER_ModificarMinutos(horaIng);
+						ChangeIDLE();
+					}
+				break;
+				case 'S': 
+					OutMHoraS();
+					if (KEYPAD_Scan(&key) && ingresoDig==0)
+					{
+						ingresoDig=1;
+						horaIng= (uint8_t)key *10;
+					}
+					else if(ingresoDig== 1)
+					{
+						horaIng+= (uint8_t) key;
+						TIMER_ModificarSegundos(horaIng);
+						ChangeIDLE();
+					}
+				break;
+			}
 			
 		break;
 	}
@@ -417,4 +475,99 @@ void MEF_Update (void)
 		LCDstring((uint8_t*)"ERROR",5);
 		LCDGotoXY(1,1);
 		LCDstring((uint8_t*)"Clave Invalida", 14);
+	}
+	
+	static void changeM_HORA_H(void)
+	{
+		system_state= M_HORA;
+		ingresoDig=0;
+		state_time=0;
+		horaIng=0;
+		modHora= 'H';
+	}
+	
+	static void changeM_HORA_M(void)
+	{
+		system_state= M_HORA;
+		ingresoDig=0;
+		state_time=0;
+		horaIng=0;
+		modHora= 'M';
+	}
+	
+	static void changeM_HORA_S(void)
+	{
+		system_state= M_HORA;
+		ingresoDig=0;
+		state_time=0;
+		horaIng=0;
+		modHora= 'S';
+	}
+	/***************************************************************
+		Funcion que sirve mostrar la salida del estado M_HORA al querer
+		modificar las horas, en este caso se mostra la hora actual con 
+		el cursor en el digito a cambiar
+	***************************************************************/
+	static void OutMHoraH(void)
+	{
+		if (state_time== 1)
+		{
+			LCDclr();
+			LCDGotoXY(4,0);
+			LCDstring(hora, 8);
+			LCDGotoXY(4,0);
+			LCDcursorOnBlink();
+		}
+		else if(ingresoDig)
+			{
+				LCDGotoXY(5,0);
+				LCDcursorOnBlink();
+			}
+		
+	}
+	
+	/***************************************************************
+		Funcion que sirve mostrar la salida del estado M_HORA al querer
+		modificar los minutos, en este caso se mostra la hora actual con 
+		el cursor en el digito a cambiar
+	***************************************************************/
+	static void OutMHoraM(void)
+	{
+		if (state_time== 1)
+		{
+			LCDclr();
+			LCDGotoXY(4,0);
+			LCDstring(hora, 8);
+			LCDGotoXY(7,0);
+			LCDcursorOnBlink();
+		}
+		else if(ingresoDig)
+			{
+				LCDGotoXY(8,0);
+				LCDcursorOnBlink();
+			}
+		
+	}
+	
+	/***************************************************************
+		Funcion que sirve mostrar la salida del estado M_HORA al querer
+		modificar los segundos, en este caso se mostra la hora actual con 
+		el cursor en el digito a cambiar
+	***************************************************************/
+	static void OutMHoraS(void)
+	{
+		if (state_time== 1)
+		{
+			LCDclr();
+			LCDGotoXY(4,0);
+			LCDstring(hora, 8);
+			LCDGotoXY(10,0);
+			LCDcursorOnBlink();
+		}
+		else if(ingresoDig)
+			{
+				LCDGotoXY(11,0);
+				LCDcursorOnBlink();
+			}
+		
 	}
