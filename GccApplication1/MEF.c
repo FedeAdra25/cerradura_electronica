@@ -318,7 +318,6 @@ void MEF_Update (void)
 	{
 		state_time=0;
 		posClaveIng=0;
-		terminoIng=0;
 		system_state= M_CLAVE_N;
 	}
 	
