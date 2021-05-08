@@ -6,7 +6,8 @@
  */ 
 
 #include "seos.h"
-
+#include "timer.h"
+#include "MEF.h"
 
 volatile unsigned char Flag_MEF=0;
 static unsigned char iCont=0;
@@ -26,6 +27,7 @@ void SEOS_Dispatch_Tasks(){
 	if(Flag_MEF==1){ //Esto corre cada 100ms
 		if(++iClock==10){
 			TIMER_Update();
+			iClock=0;
 		}
 		Flag_MEF=0;
 		MEF_Update();

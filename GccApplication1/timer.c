@@ -45,3 +45,14 @@ unsigned char* TIMER_GetHora(){
 	hora[7] = '0' + seconds%10;
 	return hora;	
 }
+
+void TIMER_ModificarHora(uint8_t h){
+	
+}
+
+void TIMER_ModificarMinutos(uint8_t h){
+	
+}
+void TIMER_ModificarSegundos(uint8_t h){
+	
+}

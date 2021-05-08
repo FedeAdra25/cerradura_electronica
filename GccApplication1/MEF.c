@@ -310,6 +310,7 @@ void MEF_Update (void)
 	{
 		state_time=0;
 		posClaveIng=0;
+		actHora=0;
 		system_state= IDLE;
 	}
 	

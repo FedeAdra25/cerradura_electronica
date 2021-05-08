@@ -16,6 +16,10 @@ void TIMER_Update();
 
 unsigned char* TIMER_GetHora();
 
+void TIMER_ModificarHora(uint8_t);
+void TIMER_ModificarMinutos(uint8_t);
+void TIMER_ModificarSegundos(uint8_t);
+
 
 
 #endif /* TIMER_H_ */
