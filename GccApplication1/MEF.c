@@ -25,11 +25,16 @@ static uint8_t Clave_IncTime(void);
 static uint8_t AbiertoTime(void);
 
 
+void MEF_Init(uint32_t tps){
+	ticksPerSecond=tps;
+	system_state=IDLE;
+}
+
 
 void MEF_Update (void)
 {
-	//Cuento el numero de interrupciones, para calcular el tiempo en cada estado
 	state_time++;
+	//Cuento el numero de interrupciones, para calcular el tiempo en cada estado
 	switch (system_state)
 	{
 		case IDLE :
@@ -53,8 +58,7 @@ void MEF_Update (void)
 				
 			}
 			else {
-				
-						OutIdle();
+					OutIdle();
 					//if actualizo hora imprimir HH:MM:SS
 				 }
 		break;
@@ -70,7 +74,7 @@ void MEF_Update (void)
 			 }		
 		break;
 		case CLAVE_INC :
-			if(state_time == 0)
+			if(state_time == 1)
 			{
 				OutClaveInc();
 			}
@@ -80,7 +84,7 @@ void MEF_Update (void)
 				}
 		break;
 		case ABIERTO:
-			if(state_time == 0)
+			if(state_time == 1)
 			{
 				OutAbierto();
 			}
@@ -90,7 +94,7 @@ void MEF_Update (void)
 			}
 		break;
 		case M_CLAVE :
-			if (state_time==0 )
+			if (state_time == 1 )
 			{
 				OutMClave();
 			}
@@ -100,12 +104,14 @@ void MEF_Update (void)
 				{
 					Out_IngClave();
 				}
+				if(posClaveIng==4){
+					if (ClaveCorrecta()) ChangeM_CLAVE_N();
+					else ChangeCLAVE_INC();
+				}			
 			}
-			if (ClaveCorrecta()) ChangeM_CLAVE_N();
-			else ChangeCLAVE_INC();
 		break;
 		case M_CLAVE_N:
-			if(state_time == 0)
+			if(state_time==1)
 			{
 				 OutMClaveN();
 			}
@@ -136,7 +142,7 @@ void MEF_Update (void)
 			}
 		break;
 		case M_CLAVE_F :
-			if (state_time==0)
+			if (state_time==1)
 			{
 				OutMClaveF();
 			}
@@ -147,7 +153,7 @@ void MEF_Update (void)
 			}
 		break;
 		case M_CLAVE_E :
-			if(state_time==0)
+			if(state_time==1)
 			{
 				OutMClaveE();
 			}
@@ -160,6 +166,7 @@ void MEF_Update (void)
 		case M_HORA :
 		break;
 	}
+	
 }
 	
 	/***************************************************************
@@ -168,7 +175,7 @@ void MEF_Update (void)
 	***************************************************************/
 	void OutIdle(void)
 	{
-		if(state_time==0)
+		if(state_time==1)
 		{
 			LCDclr();
 			LCDGotoXY(4,1);
@@ -189,6 +196,9 @@ void MEF_Update (void)
 		system_state= ING_CLAVE;
 		claveIng[posClaveIng]= key;
 		posClaveIng++;
+		LCDclr();
+		LCDGotoXY(4,1);
+		LCDsendChar('*');
 	}
 	/***************************************************************
 		Funcion que sirve para guardar el dato ingresado por el usuario
@@ -196,12 +206,6 @@ void MEF_Update (void)
 	***************************************************************/
 	void Out_IngClave (void)
 	{
-		if (state_time == 0 && system_state == ING_CLAVE)
-		{
-			LCDclr();
-			LCDGotoXY(4,1);
-			LCDsendChar('*');
-		}
 		claveIng[posClaveIng]= key;
 		LCDGotoXY(4+posClaveIng, 1);
 		LCDsendChar('*');
@@ -310,7 +314,7 @@ void MEF_Update (void)
 	void OutMClave(void)
 	{
 			LCDclr();
-			LCDstring("Clave Actual:", 13);
+			LCDstring(" Clave Actual:", 13);
 			LCDGotoXY(4,1);
 	}
 	
@@ -329,7 +333,7 @@ void MEF_Update (void)
 	void OutMClaveN(void)
 	{
 			LCDclr();
-			LCDstring("Clave nueva:", 12);
+			LCDstring(" Clave nueva:", 13);
 			LCDGotoXY(4,1);
 	}
 	
@@ -354,9 +358,9 @@ void MEF_Update (void)
 	{
 		LCDclr();
 		LCDGotoXY(4,0);
-		LCDstring("fin inicio",10);
+		LCDstring(" Fin inicio",11);
 		LCDGotoXY(4,1);
-		LCDstring("nueva clave", 11);
+		LCDstring(" Nueva clave", 12);
 	}
 	
 	
