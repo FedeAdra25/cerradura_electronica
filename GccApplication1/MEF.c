@@ -37,7 +37,7 @@ void MEF_Update (void)
 	//Cuento el numero de interrupciones, para calcular el tiempo en cada estado
 	switch (system_state)
 	{
-		case IDLE :
+		case IDLE:
 			if (KEYPAD_Scan(&key))
 			{
 				switch (key)
