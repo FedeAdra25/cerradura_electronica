@@ -47,12 +47,19 @@ unsigned char* TIMER_GetHora(){
 }
 
 void TIMER_ModificarHora(uint8_t h){
-	
+	if(h<24 && h>=0){
+		hours=h;
+	}
 }
 
-void TIMER_ModificarMinutos(uint8_t h){
+void TIMER_ModificarMinutos(uint8_t m){
+	if(m<60 && m>=0){
+		minutes=m;
+	}
 	
 }
-void TIMER_ModificarSegundos(uint8_t h){
-	
+void TIMER_ModificarSegundos(uint8_t s){
+	if(s<60 && s>=0){
+		seconds=s;
+	}
 }
