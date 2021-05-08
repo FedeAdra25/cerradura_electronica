@@ -200,7 +200,7 @@ void MEF_Update (void)
 		claveIng[posClaveIng]= key;
 		posClaveIng++;
 		LCDclr();
-		LCDGotoXY(4,1);
+		LCDGotoXY(6,1);
 		LCDsendChar('*');
 	}
 	/***************************************************************
@@ -210,7 +210,7 @@ void MEF_Update (void)
 	void Out_IngClave (void)
 	{
 		claveIng[posClaveIng]= key;
-		LCDGotoXY(6+posClaveIng, 1);
+		//LCDGotoXY(6+posClaveIng, 1);
 		LCDsendChar('*');
 		posClaveIng++;
 	}
@@ -318,7 +318,7 @@ void MEF_Update (void)
 	{
 			LCDclr();
 			LCDstring(" Clave Actual:", 13);
-			LCDGotoXY(4,1);
+			LCDGotoXY(6,1);
 	}
 	
 	void ChangeM_CLAVE_N(void)
@@ -337,7 +337,7 @@ void MEF_Update (void)
 	{
 			LCDclr();
 			LCDstring(" Clave nueva:", 13);
-			LCDGotoXY(4,1);
+			LCDGotoXY(6,1);
 	}
 	
 	void ChangeM_CLAVE_F(void)
@@ -360,9 +360,9 @@ void MEF_Update (void)
 	void OutMClaveF(void)
 	{
 		LCDclr();
-		LCDGotoXY(4,0);
+		LCDGotoXY(2,0);
 		LCDstring(" Fin inicio",11);
-		LCDGotoXY(4,1);
+		LCDGotoXY(2,1);
 		LCDstring(" Nueva clave", 12);
 	}
 	
