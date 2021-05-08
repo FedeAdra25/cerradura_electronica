@@ -14,6 +14,7 @@
 typedef enum {IDLE, ING_CLAVE, ABIERTO, CLAVE_INC, M_HORA, M_CLAVE, M_CLAVE_F, M_CLAVE_E, M_CLAVE_N} MEF_state;
 
 //Funciones generales de la MEF
+void MEF_Init(uint32_t);
 void MEF_Update (void);
 
 //Funciones de cambios de estados

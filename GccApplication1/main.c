@@ -8,6 +8,7 @@
 #include "main.h"
 #include "lcd.h"
 #include "KeypadScanLib.h"
+#include "MEF.h"
 
 int main(void)
 {
@@ -20,7 +21,7 @@ int main(void)
 	
 	//Inicializar MEF
 	
-	//mefinit
+	MEF_Init(10);
 	
 	
 	//Configurar Arq time-triggered
@@ -32,11 +33,13 @@ int main(void)
 	
 	
     while (1) 
-    {
+    {	/*
 		if(KEYPAD_Scan(&a)){
 			LCDGotoXY(8,0);
 			LCDsendChar(a);
 		}
+		*/
+		MEF_Update();
 		_delay_ms(100);
 		//realizar  tareas
     }
