@@ -203,7 +203,7 @@ void MEF_Update (void)
 		Funcion que sirve mostrar la salida del estado IDLE, en este
 		caso se muestra la hora y el mensaje CERRADO
 	***************************************************************/
-	void OutIdle(void)
+	static void OutIdle(void)
 	{
 		if(state_time==1)
 		{
@@ -220,7 +220,7 @@ void MEF_Update (void)
 		estado ING_CLAVE, guarda el caracter ingresado por el usuario,
 		cambia el estado actual e imprimer el * en el LCD
 	***************************************************************/
-	void changeING_CLAVE (void)
+	static void changeING_CLAVE (void)
 	{
 		state_time=0;
 		system_state= ING_CLAVE;
@@ -234,7 +234,7 @@ void MEF_Update (void)
 		Funcion que sirve para guardar el dato ingresado por el usuario
 		y mostrar el * en el LCD de salida del sistema
 	***************************************************************/
-	void Out_IngClave (void)
+	static void Out_IngClave (void)
 	{
 		claveIng[posClaveIng]= key;
 		//LCDGotoXY(6+posClaveIng, 1);
@@ -258,13 +258,13 @@ void MEF_Update (void)
 			return 1;
 	}
 	
-	void ChangeABIERTO(void)
+	static void ChangeABIERTO(void)
 	{
 		state_time=0;
 		system_state= ABIERTO;
 	}
 	
-	void ChangeCLAVE_INC(void)
+	static void ChangeCLAVE_INC(void)
 	{
 		state_time=0;
 		system_state= CLAVE_INC;
@@ -275,7 +275,7 @@ void MEF_Update (void)
 	CLAVE_INC, el mismo consiste en mostrar en el segundo renglon del
 	LCD "DENEGADO" por 2 segundos
 	***************************************************************/
-	void OutClaveInc(void)
+	static void OutClaveInc(void)
 	{
 		LCDclr();
 		LCDGotoXY(4,1);
@@ -296,7 +296,7 @@ void MEF_Update (void)
 		else return 1;
 	}
 	
-	void ChangeIDLE(void)
+	static void ChangeIDLE(void)
 	{
 		state_time=0;
 		posClaveIng=0;
@@ -308,7 +308,7 @@ void MEF_Update (void)
 		Funcion que sirve mostrar la salida del estado ABIERTO, en este
 		caso se muestra el mensaje ABIERTO
 	***************************************************************/
-	void OutAbierto(void)
+	static void OutAbierto(void)
 	{
 		LCDclr();
 		LCDGotoXY(4,1);
@@ -329,7 +329,7 @@ void MEF_Update (void)
 		else return 1;
 	}
 	
-	void ChangeM_CLAVE(void)
+	static void ChangeM_CLAVE(void)
 	{
 		state_time=0;
 		posClaveIng=0;
@@ -341,14 +341,14 @@ void MEF_Update (void)
 		caso se muestra el mensaje "clave actual:", y a medida que se
 		presionan las teclas *
 	***************************************************************/
-	void OutMClave(void)
+	static void OutMClave(void)
 	{
 			LCDclr();
 			LCDstring((uint8_t*)" Clave Actual:", 13);
 			LCDGotoXY(6,1);
 	}
 	
-	void ChangeM_CLAVE_N(void)
+	static void ChangeM_CLAVE_N(void)
 	{
 		state_time=0;
 		posClaveIng=0;
@@ -360,20 +360,20 @@ void MEF_Update (void)
 		caso se muestra el mensaje "clave nueva:", y a medida que se
 		presionan las teclas *
 	***************************************************************/
-	void OutMClaveN(void)
+	static void OutMClaveN(void)
 	{
 			LCDclr();
 			LCDstring((uint8_t*)" Clave nueva:", 13);
 			LCDGotoXY(6,1);
 	}
 	
-	void ChangeM_CLAVE_F(void)
+	static void ChangeM_CLAVE_F(void)
 	{
 		state_time=0;
 		system_state= M_CLAVE_F;
 	}
 	
-	void ChangeM_CLAVE_E(void)
+	static void ChangeM_CLAVE_E(void)
 	{
 		state_time=0;
 		system_state= M_CLAVE_E;
@@ -384,7 +384,7 @@ void MEF_Update (void)
 		Funcion que sirve mostrar la salida del estado M_CLAVE_F, en este
 		caso se muestra el mensaje "clave nueva:"
 	***************************************************************/
-	void OutMClaveF(void)
+	static void OutMClaveF(void)
 	{
 		LCDclr();
 		LCDGotoXY(2,0);
@@ -399,7 +399,7 @@ void MEF_Update (void)
 		caso se muestra el mensaje "ERROR
 									Clave Invalida"
 	***************************************************************/
-	void OutMClaveE(void)
+	static void OutMClaveE(void)
 	{
 		LCDclr();
 		LCDGotoXY(4,0);
