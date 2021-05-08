@@ -9,6 +9,7 @@
 #include "lcd.h"
 #include "KeypadScanLib.h"
 #include "MEF.h"
+#inclued "seos.h"
 
 int main(void)
 {
@@ -25,7 +26,8 @@ int main(void)
 	
 	
 	//Configurar Arq time-triggered
-	//sEOS init
+	//Recibe ms para el timer
+	SEOS_Init(100);
 	
 	//Habilitar interrupciones
 	sei();
@@ -33,12 +35,14 @@ int main(void)
 	
 	
     while (1) 
-    {	/*
+    {	
+		/*
 		if(KEYPAD_Scan(&a)){
 			LCDGotoXY(8,0);
 			LCDsendChar(a);
 		}
 		*/
+		
 		MEF_Update();
 		_delay_ms(100);
 		//realizar  tareas

@@ -166,7 +166,7 @@ void MEF_Update (void)
 				else if (key!='A' && key!='B' && key!='C' && key!='*')
 					{
 						if (posClaveIng < 4) Out_IngClave();
-						else posClaveIng ++;
+						else posClaveIng++;
 					}
 			}
 		break;
@@ -192,7 +192,8 @@ void MEF_Update (void)
 				ChangeIDLE();
 			}
 		break;
-		case M_HORA :
+		case M_HORA:
+			
 		break;
 	}
 	
