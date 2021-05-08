@@ -13,7 +13,7 @@
 int main(void)
 {
 	//Variables
-	uint8_t a=0;
+	// uint8_t a=0;
 	//Inicializar periféricos
 	
 	KEYPAD_Init();

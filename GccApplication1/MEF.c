@@ -65,9 +65,12 @@ void MEF_Update (void)
 		case ING_CLAVE :
 			if (KEYPAD_Scan(&key) && (posClaveIng < 4))
 			{
-				Out_IngClave();
+				if(key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '#' && key != '*')
+				{
+					Out_IngClave();
+				}
 			}
-			if (posClaveIng >= 4)
+			if (posClaveIng == 4)
 			 {
 				if(ClaveCorrecta()) ChangeABIERTO();
 				else ChangeCLAVE_INC();
@@ -207,7 +210,7 @@ void MEF_Update (void)
 	void Out_IngClave (void)
 	{
 		claveIng[posClaveIng]= key;
-		LCDGotoXY(4+posClaveIng, 1);
+		LCDGotoXY(6+posClaveIng, 1);
 		LCDsendChar('*');
 		posClaveIng++;
 	}
