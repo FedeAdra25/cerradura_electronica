@@ -10,8 +10,8 @@ static unsigned char seconds=0;
 static unsigned char minutes=0;
 static unsigned char hours=0;
 
-
-
+#include "timer.h"
+#include <stdlib.h>
 
 void TIMER_Init(){
 	
