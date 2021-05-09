@@ -13,8 +13,10 @@ static unsigned char hours=0;
 #include "timer.h"
 #include <stdlib.h>
 
-void TIMER_Init(){
-	
+void TIMER_Init(unsigned char h,unsigned char m,unsigned char s){
+	 TIMER_ModificarHora(h);
+	 TIMER_ModificarMinutos(m);
+	 TIMER_ModificarSegundos(s);
 }
 
 void TIMER_Update(){
@@ -33,7 +35,8 @@ void TIMER_Update(){
 }
 
 
-unsigned char* TIMER_GetHora(){
+unsigned char* TIMER_GetHora(unsigned char* hAct){
+	free(hAct);
 	unsigned char* hora = malloc(sizeof(char)*8);
 	hora[0] = '0' + hours/10;
 	hora[1] = '0' + hours%10;
@@ -43,22 +46,22 @@ unsigned char* TIMER_GetHora(){
 	hora[5] = ':';
 	hora[6] = '0' + seconds/10;
 	hora[7] = '0' + seconds%10;
-	return hora;	
+	return hora;
 }
 
-void TIMER_ModificarHora(uint8_t h){
+void TIMER_ModificarHora(unsigned char h){
 	if(h<24 && h>=0){
 		hours=h;
 	}
 }
 
-void TIMER_ModificarMinutos(uint8_t m){
+void TIMER_ModificarMinutos(unsigned char m){
 	if(m<60 && m>=0){
 		minutes=m;
 	}
 	
 }
-void TIMER_ModificarSegundos(uint8_t s){
+void TIMER_ModificarSegundos(unsigned char s){
 	if(s<60 && s>=0){
 		seconds=s;
 	}

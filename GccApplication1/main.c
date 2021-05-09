@@ -26,7 +26,7 @@ int main(void)
 	MEF_Init(10);
 	
 	//Inicializar Timer (para el reloj)
-	TIMER_Init();
+	TIMER_Init((uint8_t)14,(uint8_t)00,(uint8_t)00);
 	
 	
 	//Configurar Arq time-triggered
