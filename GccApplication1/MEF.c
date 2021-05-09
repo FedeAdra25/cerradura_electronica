@@ -15,6 +15,7 @@ const uint8_t lengthClaveAct=4;
 //Variables globales privadas
 static  uint8_t state_time = 0;
 static MEF_state system_state;
+//Se usa para la maquina de subestados al cambiar la hora
 static MEF_H_substate hora_substate;
 static uint8_t claveAct[4] = {'0','8','5','2'};
 static uint8_t key;
@@ -23,8 +24,6 @@ static uint8_t posClaveIng= 0;
 static uint32_t ticksPerSecond; //Se inicializa en el init
 static uint8_t actHora = 0; 
 static unsigned char* hora;
-//Se usa para saber si estoy modificando la hora, los minutos, o los segundos
-static uint8_t modHora;
 static uint8_t ingresoDig;
 static uint8_t horaIng;
 
