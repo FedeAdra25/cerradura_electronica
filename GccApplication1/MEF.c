@@ -27,6 +27,7 @@ static uint8_t actHora = 0;
 static unsigned char* hora;
 static uint8_t ingresoDig;
 static uint8_t horaIng;
+static uint8_t teclaPresionada=0;
 
 
 //Prototipos de funciones privadas 
@@ -74,10 +75,11 @@ void MEF_Update (void)
 	//Cuento el numero de interrupciones, para calcular el tiempo en cada estado
 	state_time++;
 	actHora++;
+	teclaPresionada= KEYPAD_Scan(&key);
 	switch (system_state)
 	{
 		case IDLE:
-			if (KEYPAD_Scan(&key))
+			if (teclaPresionada)
 			{
 				switch (key)
 				{
@@ -105,7 +107,7 @@ void MEF_Update (void)
 				 }
 		break;
 		case ING_CLAVE :
-			if (KEYPAD_Scan(&key) && (posClaveIng < 4))
+			if (teclaPresionada && (posClaveIng < 4))
 			{
 				if(key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '#' && key != '*')
 				{
@@ -143,7 +145,7 @@ void MEF_Update (void)
 			{
 				OutMClave();
 			}
-			if(KEYPAD_Scan(&key))
+			if(teclaPresionada)
 			{
 				if (key!='A' && key!='B' && key!='C' && key!='*' && key!='D' && key!='#' && posClaveIng < 4)
 				{
@@ -160,7 +162,7 @@ void MEF_Update (void)
 			{
 				 OutMClaveN();
 			}
-			if( KEYPAD_Scan(&key))
+			if( teclaPresionada)
 			{
 				if (key == 'D')
 				{
@@ -213,7 +215,7 @@ void MEF_Update (void)
 			{
 				case M_HORA_H:
 					if(state_time==1) OutMHoraH();
-					if(KEYPAD_Scan(&key)){
+					if(teclaPresionada){
 						if (key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#')
 						{
 							if (ingresoDig== 0)
@@ -244,7 +246,7 @@ void MEF_Update (void)
 				break;
 				case M_HORA_M:
 					if(state_time==1) OutMHoraM();
-					if(KEYPAD_Scan(&key)){						
+					if(teclaPresionada){						
 						if (key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#')
 						{
 							if (ingresoDig==0)
@@ -274,7 +276,7 @@ void MEF_Update (void)
 				break;
 				case M_HORA_S: 
 					if(state_time==1) OutMHoraS();
-					if(KEYPAD_Scan(&key)){
+					if(teclaPresionada){
 						
 						if (key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#')
 						{
@@ -325,7 +327,7 @@ void MEF_Update (void)
 			LCDGotoXY(4,1);
 			LCDstring((uint8_t*)"CERRADO",(uint8_t) 7);
 		}
-		if (actHora == 10)
+		if (actHora == ticksPerSecond)
 		{
 			hora = TIMER_GetHora(hora);
 			LCDGotoXY(4,0);
