@@ -8,6 +8,7 @@
 #include "KeypadScanLib.h"
 #include "lcd.h"
 #include "timer.h"
+#include <stdlib.h>
 
 // Constantes
 const uint8_t lengthClaveAct=4;
@@ -319,19 +320,18 @@ void MEF_Update (void)
 		{
 			LCDclr();
 			LCDGotoXY(4,0);
-			hora = TIMER_GetHora();
+			hora = TIMER_GetHora(hora);
 			LCDstring(hora, 8);
 			LCDGotoXY(4,1);
 			LCDstring((uint8_t*)"CERRADO",(uint8_t) 7);
 		}
 		if (actHora == 10)
 		{
-			hora = TIMER_GetHora();
+			hora = TIMER_GetHora(hora);
 			LCDGotoXY(4,0);
 			LCDstring(hora, 8);
 			actHora=0;
-		}
-		
+		}		
 	}
 	/***************************************************************
 		Funcion que sirve para transicionar del estado IDLE, al 

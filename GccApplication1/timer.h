@@ -8,17 +8,21 @@
 
 #ifndef TIMER_H_
 #define TIMER_H_
-#include <avr/io.h>
 
-
-void TIMER_Init();
+//Funciones para inicializar el timer
+//y actualizar los segundos
+void TIMER_Init(unsigned char,unsigned char,unsigned char); //pide horas,minutos y segundos para inicializar
 void TIMER_Update();
 
-unsigned char* TIMER_GetHora();
+//Funcion para conseguir la hora
+//En formato hh:mm:ss
+unsigned char* TIMER_GetHora(unsigned char*);
 
-void TIMER_ModificarHora(uint8_t);
-void TIMER_ModificarMinutos(uint8_t);
-void TIMER_ModificarSegundos(uint8_t);
+//Funciones para modificar hora minutos o segundos
+//En caso de ingresar valores inválidos no se realizará ningún cambio
+void TIMER_ModificarHora(unsigned char);
+void TIMER_ModificarMinutos(unsigned char);
+void TIMER_ModificarSegundos(unsigned char);
 
 
 

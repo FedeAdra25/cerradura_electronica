@@ -11,7 +11,8 @@
 
 #include <avr/io.h>
 
-typedef enum {IDLE, ING_CLAVE, ABIERTO, CLAVE_INC, M_HORA, M_CLAVE, M_CLAVE_F, M_CLAVE_E, M_CLAVE_N} MEF_state;
+typedef enum {IDLE, ING_CLAVE, ABIERTO, CLAVE_INC,
+M_HORA, M_CLAVE, M_CLAVE_F, M_CLAVE_E, M_CLAVE_N} MEF_state;
 typedef enum {M_HORA_H,M_HORA_M,M_HORA_S} MEF_H_substate;
 
 //Funciones generales de la MEF
