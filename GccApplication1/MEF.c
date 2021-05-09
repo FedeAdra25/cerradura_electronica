@@ -15,6 +15,7 @@ const uint8_t lengthClaveAct=4;
 //Variables globales privadas
 static  uint8_t state_time = 0;
 static MEF_state system_state;
+static MEF_H_substate hora_substate;
 static uint8_t claveAct[4] = {'0','8','5','2'};
 static uint8_t key;
 static uint8_t claveIng[4];
@@ -208,75 +209,98 @@ void MEF_Update (void)
 			}
 		break;
 		case M_HORA:
-			switch(modHora)
+			switch(hora_substate)
 			{
-				case 'H':
-					OutMHoraH();
-					if (KEYPAD_Scan(&key) && key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#')
-					{
-						if (ingresoDig== 0)
+				case M_HORA_H:
+					if(state_time==1) OutMHoraH();
+					if(KEYPAD_Scan(&key)){
+						if (key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#')
 						{
-							ingresoDig=1;
-							horaIng= (uint8_t)key *10;
-						} 
-						else horaIng+= (uint8_t) key;
+							if (ingresoDig== 0)
+							{
+								ingresoDig++;
+								hora[0]=key; //para ir cambiandola en el display
+								horaIng= (key-'0') * 10;							
+								
+							} 
+							else if(ingresoDig==1){
+								ingresoDig++;
+								hora[1]=key; //para ir cambiandola en el display
+								horaIng+= (key-'0');
+							}
+							OutMHoraH();
 						
-					}
-					else if( key == 'A')
+						}
+						else if( key == 'A')
 						{
 							TIMER_ModificarHora(horaIng);
-							ChangeIDLE();
-							
+							ChangeIDLE();							
 						}
 						else if(key == '#')
-							{
-								ChangeIDLE();
-							}
-				break;
-				case 'M':
-					OutMHoraM();
-					if (KEYPAD_Scan(&key) && key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#')
-					{
-						if (ingresoDig== 0)
 						{
-							ingresoDig=1;
-							horaIng= (uint8_t)key *10;
+							ChangeIDLE();
 						}
-						else horaIng+= (uint8_t) key;
-						
-					}
-					else if( key == 'B')
+						}
+				break;
+				case M_HORA_M:
+					if(state_time==1) OutMHoraM();
+					if(KEYPAD_Scan(&key)){						
+						if (key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#')
 						{
-							TIMER_ModificarHora(horaIng);
+							if (ingresoDig==0)
+							{
+								ingresoDig++;
+								hora[3]=key;
+								horaIng= (key-'0') *10;
+							}
+							else if(ingresoDig==1){
+								ingresoDig++;
+								hora[4]=key;
+								horaIng+= (key-'0');
+							}
+							OutMHoraM();
+						}
+						else if( key == 'B')
+							{
+								TIMER_ModificarMinutos(horaIng);
+								ChangeIDLE();
+						
+							}
+						else if(key == '#')
+						{
+							ChangeIDLE();
+						}
+					}
+				break;
+				case M_HORA_S: 
+					if(state_time==1) OutMHoraS();
+					if(KEYPAD_Scan(&key)){
+						
+						if (key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#')
+						{
+							if (ingresoDig == 0)
+							{
+								ingresoDig++;
+								hora[6]=key;
+								horaIng= (key-'0') *10;
+							}
+							else if(ingresoDig==1){
+								ingresoDig++;
+								hora[7]=key;
+								horaIng+= (key-'0');
+							}
+							OutMHoraS();
+						}
+						else if( key == 'C')
+						{
+							TIMER_ModificarSegundos(horaIng);
 							ChangeIDLE();
 						
 						}
 						else if(key == '#')
-							{
-								ChangeIDLE();
-							}
-				break;
-				case 'S': 
-					OutMHoraS();
-					if (KEYPAD_Scan(&key) && key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#')
-					{
-						if (ingresoDig== 0)
 						{
-							ingresoDig=1;
-							horaIng= (uint8_t)key *10;
+							ChangeIDLE();
 						}
-						else horaIng+= (uint8_t) key;
-						
-					}
-					else if( key == 'C')
-					{
-						TIMER_ModificarHora(horaIng);
-						ChangeIDLE();
-						
-					}
-					else if(key == '#')
-					{
-						ChangeIDLE();
 					}
 				break;
 			}
@@ -339,7 +363,7 @@ void MEF_Update (void)
 	
 	/***************************************************************
 		Funcion que sirve para que sirve para comparar la clave
-		ingresada por el usuario con la contraseña actual del 
+		ingresada por el usuario con la contraseï¿½a actual del 
 		sistema
 	***************************************************************/
 	
@@ -397,6 +421,7 @@ void MEF_Update (void)
 		posClaveIng=0;
 		actHora=0;
 		system_state= IDLE;
+		LCDcursorOFF();
 	}
 	
 	
@@ -510,7 +535,7 @@ void MEF_Update (void)
 		ingresoDig=0;
 		state_time=0;
 		horaIng=0;
-		modHora= 'H';
+		hora_substate=M_HORA_H;
 	}
 	
 	static void changeM_HORA_M(void)
@@ -519,7 +544,7 @@ void MEF_Update (void)
 		ingresoDig=0;
 		state_time=0;
 		horaIng=0;
-		modHora= 'M';
+		hora_substate=M_HORA_M;
 	}
 	
 	static void changeM_HORA_S(void)
@@ -528,7 +553,7 @@ void MEF_Update (void)
 		ingresoDig=0;
 		state_time=0;
 		horaIng=0;
-		modHora= 'S';
+		hora_substate=M_HORA_S;
 	}
 	/***************************************************************
 		Funcion que sirve mostrar la salida del estado M_HORA al querer
@@ -545,12 +570,12 @@ void MEF_Update (void)
 			LCDGotoXY(4,0);
 			LCDcursorOnBlink();
 		}
-		else if(ingresoDig)
-			{
-				LCDGotoXY(5,0);
-				LCDcursorOnBlink();
-			}
-		
+		else{
+			LCDGotoXY(4,0);
+			LCDstring(hora, 8);
+			LCDGotoXY(4+ingresoDig,0);
+			LCDcursorOnBlink();			
+		}
 	}
 	
 	/***************************************************************
@@ -560,7 +585,7 @@ void MEF_Update (void)
 	***************************************************************/
 	static void OutMHoraM(void)
 	{
-		if (state_time== 1)
+		if (state_time == 1)
 		{
 			LCDclr();
 			LCDGotoXY(4,0);
@@ -568,11 +593,12 @@ void MEF_Update (void)
 			LCDGotoXY(7,0);
 			LCDcursorOnBlink();
 		}
-		else if(ingresoDig)
-			{
-				LCDGotoXY(8,0);
-				LCDcursorOnBlink();
-			}
+		else{
+			LCDGotoXY(4,0);
+			LCDstring(hora, 8);
+			LCDGotoXY(7+ingresoDig,0);
+			LCDcursorOnBlink();
+		}
 		
 	}
 	
@@ -591,10 +617,11 @@ void MEF_Update (void)
 			LCDGotoXY(10,0);
 			LCDcursorOnBlink();
 		}
-		else if(ingresoDig)
-			{
-				LCDGotoXY(11,0);
-				LCDcursorOnBlink();
-			}
+		else{
+			LCDGotoXY(4,0);
+			LCDstring(hora, 8);
+			LCDGotoXY(10+ingresoDig,0);
+			LCDcursorOnBlink();
+		}
 		
 	}
